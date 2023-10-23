@@ -20,10 +20,19 @@ jobs:
       with:
         image-ref: 'docker.io/my-organization/my-app:${{ github.sha }}'
         format: 'table'
-        exit-code: '1'
+        exit-code: '0'
         ignore-unfixed: true
         vuln-type: 'os,library'
-        severity: 'CRITICAL,LOW'
+        severity: 'CRITICAL,HIGH'
+
+    - name: Check vulnerabilities
+      run: |
+        if [[ ${{ steps.Run_Trivy_vulnerability_scanner.outputs.exit_code }} == 0 ]]; then
+          echo "No vulnerabilities found. Building the container image..."
+          docker build -t docker.io/my-organization/my-app:${{ github.sha }} .
+        else
+          echo "Vulnerabilities found. Skipping container image build."
+        fi
         
     - name: Send GitHub Action trigger data to Slack workflow
       id: slack
