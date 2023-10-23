@@ -8,6 +8,9 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
+    - name: Install dependencies
+      run: npm ci
+      
     - name: Echo current branch
       run: echo "$(date):Current branch is ${{ github.ref_name}}"
       
