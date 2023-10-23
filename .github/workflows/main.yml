@@ -12,4 +12,7 @@ jobs:
       run: echo "$(date):Current branch is ${{ github.ref_name}}"
     - name: Checkout sourse
       uses: actions/checkout@v2
+    - name: Aqua Security Trivy
+      uses: aquasecurity/trivy-action@0.12.0
+            
       
