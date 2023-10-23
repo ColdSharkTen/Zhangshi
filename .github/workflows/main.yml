@@ -14,7 +14,17 @@ jobs:
     - name: Checkout sourse
       uses: actions/checkout@v2
 
+    - name: Build an image from Dockerfile
+      run: |
+        docker build -t docker.io/my-organization/my-app:${{ github.sha }} .
     - name: Aqua Security Trivy
       uses: aquasecurity/trivy-action@0.12.0
+      with:
+        image-ref: 'docker.io/my-organization/my-app:${{ github.sha }}'
+        format: 'table'
+        exit-code: '1'
+        ignore-unfixed: true
+        vuln-type: 'os,library'
+        severity: 'CRITICAL,HIGH'
             
       
