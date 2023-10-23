@@ -33,9 +33,13 @@ jobs:
         else
           echo "Vulnerabilities found. Skipping container image build."
         fi
-        
+
+    - name: Show Trivy scan results
+      run: |
+        trivy --exit-code 0 docker.io/my-organization/my-app:${{ github.sha }}
+        if: always()
     - name: Send GitHub Action trigger data to Slack workflow
       id: slack
       uses: slackapi/slack-github-action@v1.24.0
-      env:
+        env:
         SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
