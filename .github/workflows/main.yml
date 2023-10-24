@@ -31,13 +31,12 @@ jobs:
           password: ${{ secrets.DOCKERHUB_TOKEN }}
           
     - name: Build and push
+      id: build-and-push
       uses: docker/build-push-action@v5
       with:
           push: true
           tags: zhangshi0131/zhangshi0131:${{github.sha}}
-          
-   
-        
+            
     - name: Run_Trivy_vulnerability_scanner
       uses: aquasecurity/trivy-action@master
       with:
@@ -46,22 +45,17 @@ jobs:
         exit-code: '0'
         ignore-unfixed: true
         vuln-type: 'os,library'
-        severity: 'CRITICAL,HIGH'
+        severity: 'CRITICAL,LOW'
 
     - name: Sign image with a key
       run: |
         cosign sign --yes --key env://COSIGN_PRIVATE_KEY "${TAGS}@${DIGEST}"
       env:
-        TAGS: ${{ steps.docker_meta.outputs.tags }}
+        TAGS: zhangshi0131/zhangshi0131:${{github.sha}}
         COSIGN_PRIVATE_KEY: ${{ secrets.PRIVATEKEY }}
         COSIGN_PASSWORD: ${{ secrets.COSIGN_PASSWORD }}
         DIGEST: ${{ steps.build-and-push.outputs.digest }}
-
-    - name: Sign the images with GitHub OIDC Token
-      env:
-        DIGEST: ${{ steps.build-and-push.outputs.digest }}
-        TAGS: ${{ steps.docker_meta.outputs.tags }}
-      run: cosign sign --yes "${TAGS}@${DIGEST}"
+        
    # - name: Send custom JSON data to Slack workflow
    #   id: slack
    #   uses: slackapi/slack-github-action@v1.24.0
