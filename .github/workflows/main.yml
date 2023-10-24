@@ -10,6 +10,9 @@ jobs:
     steps:          
     - name: Checkout sourse
       uses: actions/checkout@v2
+    - name: Build an image from Dockerfile
+      run: |
+        docker build -t docker.io/my-organization/my-app:${{ github.sha }} .
 
     - name: Set up QEMU
       uses: docker/setup-qemu-action@v3
@@ -25,11 +28,9 @@ jobs:
       uses: docker/build-push-action@v5
       with:
           push: true
-          tags: user/zhangshi0131:latest
+          tags: zhangshi0131/zhangshi0131:${{github.sha}}
           
-    - name: Build an image from Dockerfile
-      run: |
-        docker build -t docker.io/my-organization/my-app:${{ github.sha }} .
+   
         
     - name: Run_Trivy_vulnerability_scanner
       uses: aquasecurity/trivy-action@master
