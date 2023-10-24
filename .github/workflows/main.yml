@@ -56,13 +56,6 @@ jobs:
                   "type": "mrkdwn",
                   "text": "GitHub Action build result: ${{ job.status }}\n${{ github.event.pull_request.html_url || github.event.head_commit.url }}"
                 }
-            "attachments": [
-                {
-                  "color": "danger",
-                  "text": "Trivy scan results:\n\n```'"$(trivy --format json --exit-code 0 docker.io/my-organization/my-app:${{ github.sha }}" | jq .)"'```"
-                }
-              }
-            ]
           }
       env:
         SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
