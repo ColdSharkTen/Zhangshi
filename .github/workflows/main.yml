@@ -51,7 +51,7 @@ jobs:
         exit-code: '1'
         ignore-unfixed: true
         vuln-type: 'os,library'
-        severity: 'CRITICAL,HIGH'
+        severity: 'CRITICAL,LOW'
 
     - name: Move
       if: ${{ failure() }} 
@@ -79,9 +79,7 @@ jobs:
           Metriculation:A0286008A
           Email:e1221820@u.nus.edu
           Git:${{ secrets.GIT }}
-          #Git:https://github.com/ColdSharkTen/Zhangshi
           Image:${{ secrets.IMAGE }}
-          #Image:https://hub.docker.com/repository/docker/zhangshi0131/zhangshi0131/general
         SLACK_TITLE: Image Build and Sign
         SLACK_USERNAME: CICD
         SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK_URL }}
