@@ -43,7 +43,7 @@ jobs:
         image-ref: 'docker.io/my-organization/my-app:${{ github.sha }}'
         format: 'table'
         scan-type: 'fs'
-        output: 'trivy_scan_results.txt'
+        output: 'results/trivy_scan_results.txt'
         exit-code: '1'
         ignore-unfixed: true
         vuln-type: 'os,library'
@@ -103,6 +103,6 @@ jobs:
           channel_id: ${{ secrets.SLACK_CHANNEL }}
           content: table
           
-          file_path: 'docs/trivy_scan_results.txt'
+          file_path: 'results/trivy_scan_results.txt'
           title: 'table'
           initial_comment: 'post by slack-upload-file'
