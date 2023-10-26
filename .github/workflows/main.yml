@@ -45,7 +45,7 @@ jobs:
         exit-code: '0'
         ignore-unfixed: true
         vuln-type: 'os,library'
-        severity: 'CRITICAL,LOW'
+        severity: 'CRITICAL,HIGH'
 
     - name: Sign image with a key
       run: |
@@ -58,6 +58,7 @@ jobs:
 
     - name: Slack Notification
       uses: rtCamp/action-slack-notify@v2
+      if: ${{ failure() }} 
       env:
         SLACK_COLOR: ${{ job.status }} 
         SLACK_ICON: https://github.com/rtCamp.png?size=48
@@ -70,3 +71,14 @@ jobs:
         SLACK_TITLE: Image Build and Sign
         SLACK_USERNAME: CICD
         SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK_URL }}
+
+    - uses: MeilCli/slack-upload-file@v3
+      if: ${{ failure() }} 
+      with:
+          slack_token: ${{ secrets.SlACKTOKEN }}
+          channel_id: ${{ secrets.SLACKCHANNEL }}
+          content: table
+          
+          file_name: 'text.txt'
+          title: 'table'
+          initial_comment: 'post by slack-upload-file'
