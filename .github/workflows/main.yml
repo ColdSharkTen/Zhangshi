@@ -48,6 +48,7 @@ jobs:
         severity: 'CRITICAL,HIGH'
     
     - name: Save Trivy Scan Results
+      if: ${{ failure() }} 
       run: |
         trivy_scan_results="$(trivy --format table --exit-code 1 --ignore-unfixed --vuln-type os,library --severity CRITICAL,HIGH docker.io/my-organization/my-app:${{ github.sha }})"
         echo "$trivy_scan_results" > trivy_scan_results.txt
@@ -55,6 +56,7 @@ jobs:
 
     - name: Upload Trivy Scan Results
       uses: actions/upload-artifact@v2
+      if: ${{ failure() }} 
       with:
         name: trivy-scan-results
         path: trivy_scan_results.txt
