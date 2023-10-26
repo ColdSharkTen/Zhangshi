@@ -65,4 +65,4 @@ jobs:
         SLACK_MESSAGE: 'Post Content :rocket:'
         SLACK_TITLE: Email
         SLACK_USERNAME: Zhang Shi
-        SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK }}
+        SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK_URL }}
