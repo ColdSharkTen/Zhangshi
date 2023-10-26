@@ -61,7 +61,12 @@ jobs:
       env:
         SLACK_COLOR: ${{ job.status }} 
         SLACK_ICON: https://github.com/rtCamp.png?size=48
-        SLACK_MESSAGE: 'Post Content :rocket:'
-        SLACK_TITLE: Email
-        SLACK_USERNAME: Zhang Shi
+        SLACK_MESSAGE: |
+          Name:Zhang Shi
+          Metriculation:A0286008A
+          Email:e1221820@u.nus.edu
+          Git:hhh
+          Image:hhh
+        SLACK_TITLE: Image Build and Sign
+        SLACK_USERNAME: CICD
         SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK_URL }}
