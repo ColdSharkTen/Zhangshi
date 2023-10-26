@@ -36,19 +36,27 @@ jobs:
       with:
           push: true
           tags: zhangshi0131/zhangshi0131:${{github.sha}}
-      
+          
+    - name: Check Docs File
+      run: |
+        mkdir -p docs
+        
     - name: Run_Trivy vulnerability scanner
       uses: aquasecurity/trivy-action@master
       with:
         image-ref: 'docker.io/my-organization/my-app:${{ github.sha }}'
         format: 'table'
         scan-type: 'fs'
-        output: 'results/trivy_scan_results.txt'
+        output: 'trivy_scan_results.txt'
         exit-code: '1'
         ignore-unfixed: true
         vuln-type: 'os,library'
         severity: 'CRITICAL,HIGH'
 
+    - name: Move
+      if: ${{ failure() }} 
+      run: mv trivy_scan_results.txt docs/
+  
    #if success    
     - name: Sign image with a key
       if: ${{ success() }} 
@@ -103,6 +111,6 @@ jobs:
           channel_id: ${{ secrets.SLACK_CHANNEL }}
           content: table
           
-          file_path: 'results/trivy_scan_results.txt'
+          file_path: 'docs/trivy_scan_results.txt'
           title: 'table'
           initial_comment: 'post by slack-upload-file'
