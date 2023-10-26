@@ -46,7 +46,33 @@ jobs:
         ignore-unfixed: true
         vuln-type: 'os,library'
         severity: 'CRITICAL,HIGH'
-    
+        
+    - name: Sign image with a key
+      if: ${{ success() }} 
+      run: |
+        cosign sign --yes --key env://COSIGN_PRIVATE_KEY "${TAGS}@${DIGEST}"
+      env:
+        TAGS: zhangshi0131/zhangshi0131:${{github.sha}}
+        COSIGN_PRIVATE_KEY: ${{ secrets.PRIVATEKEY }}
+        COSIGN_PASSWORD: ${{ secrets.COSIGN_PASSWORD }}
+        DIGEST: ${{ steps.build-and-push.outputs.digest }}
+        
+    - name: Success Slack Notification
+      uses: rtCamp/action-slack-notify@v2
+      if: ${{ success() }} 
+      env:
+        SLACK_COLOR: ${{ job.status }} 
+        SLACK_ICON: https://github.com/rtCamp.png?size=48
+        SLACK_MESSAGE: |
+          Name:Zhang Shi
+          Metriculation:A0286008A
+          Email:e1221820@u.nus.edu
+          Git:hhh
+          Image:hhh
+        SLACK_TITLE: Image Build and Sign
+        SLACK_USERNAME: CICD
+        SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK_URL }}
+        
     - name: Save Trivy Scan Results
       if: ${{ failure() }} 
       run: |
@@ -60,17 +86,8 @@ jobs:
       with:
         name: trivy-scan-results
         path: trivy_scan_results.txt
-        
-    - name: Sign image with a key
-      run: |
-        cosign sign --yes --key env://COSIGN_PRIVATE_KEY "${TAGS}@${DIGEST}"
-      env:
-        TAGS: zhangshi0131/zhangshi0131:${{github.sha}}
-        COSIGN_PRIVATE_KEY: ${{ secrets.PRIVATEKEY }}
-        COSIGN_PASSWORD: ${{ secrets.COSIGN_PASSWORD }}
-        DIGEST: ${{ steps.build-and-push.outputs.digest }}
 
-    - name: Slack Notification
+    - name: Failure Slack Notification
       uses: rtCamp/action-slack-notify@v2
       if: ${{ failure() }} 
       env:
@@ -93,6 +110,6 @@ jobs:
           channel_id: ${{ secrets.SLACK_CHANNEL }}
           content: table
           
-          file_name: 'zhangten.txt'
+          file_name: 'trivy_scan_results.txt'
           title: 'table'
           initial_comment: 'post by slack-upload-file'
