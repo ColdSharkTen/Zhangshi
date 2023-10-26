@@ -36,7 +36,7 @@ jobs:
       with:
           push: true
           tags: zhangshi0131/zhangshi0131:${{github.sha}}
-            
+      
     - name: Run_Trivy vulnerability scanner
       uses: aquasecurity/trivy-action@master
       with:
@@ -105,6 +105,6 @@ jobs:
           channel_id: ${{ secrets.SLACK_CHANNEL }}
           content: table
           
-          file_name: 'trivy_scan_results.txt'
+          file_path: 'docs/trivy_scan_results.txt'
           title: 'table'
           initial_comment: 'post by slack-upload-file'
