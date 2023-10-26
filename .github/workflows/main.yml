@@ -94,12 +94,8 @@ jobs:
         SLACK_COLOR: ${{ job.status }} 
         SLACK_ICON: https://github.com/rtCamp.png?size=48
         SLACK_MESSAGE: |
-          Name:Zhang Shi
-          Metriculation:A0286008A
-          Email:e1221820@u.nus.edu
-          Git:${{ secrets.GIT }}
-          Image:${{ secrets.IMAGE }}
-        SLACK_TITLE: Image Build and Sign
+          Failed trivy scan, see uploaded report
+        SLACK_TITLE: ScanFailed_ZhangShi
         SLACK_USERNAME: CICD_ZhangShi
         SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK_URL }}
         
@@ -205,12 +201,8 @@ jobs:
         SLACK_COLOR: ${{ job.status }} 
         SLACK_ICON: https://github.com/rtCamp.png?size=48
         SLACK_MESSAGE: |
-          Name:Zhang Shi
-          Metriculation:A0286008A
-          Email:e1221820@u.nus.edu
-          Git:${{ secrets.GIT }}
-          Image:${{ secrets.IMAGE }}
-        SLACK_TITLE: Image Build and Sign
+          Failed trivy scan, see uploaded report
+        SLACK_TITLE: ScanFailed_ZhangShi
         SLACK_USERNAME: CICD_ZhangShi
         SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK_URL }}
         
