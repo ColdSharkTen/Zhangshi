@@ -100,7 +100,7 @@ jobs:
           Git:${{ secrets.GIT }}
           Image:${{ secrets.IMAGE }}
         SLACK_TITLE: Image Build and Sign
-        SLACK_USERNAME: CICD
+        SLACK_USERNAME: CICD_ZhangShi
         SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK_URL }}
         
     - uses: MeilCli/slack-upload-file@v3
@@ -112,7 +112,7 @@ jobs:
           
           file_path: 'docs/trivy_scan_results.txt'
           title: 'table'
-          initial_comment: 'post by slack-upload-file'
+          initial_comment: 'post by Zhangshi'
           
   Fail:
     needs: Success
@@ -211,7 +211,7 @@ jobs:
           Git:${{ secrets.GIT }}
           Image:${{ secrets.IMAGE }}
         SLACK_TITLE: Image Build and Sign
-        SLACK_USERNAME: CICD
+        SLACK_USERNAME: CICD_ZhangShi
         SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK_URL }}
         
     - uses: MeilCli/slack-upload-file@v3
@@ -223,5 +223,5 @@ jobs:
           
           file_path: 'docs/trivy_scan_results.txt'
           title: 'table'
-          initial_comment: 'post by slack-upload-file'
+          initial_comment: 'post by Zhangshi'
 
