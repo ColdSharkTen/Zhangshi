@@ -72,7 +72,7 @@ jobs:
           Email:e1221820@u.nus.edu
           Git:${{ secrets.GIT }}
           #Git:https://github.com/ColdSharkTen/Zhangshi
-          Image:${{ secrets.Image }}
+          Image:${{ secrets.IMAGE }}
           #Image:https://hub.docker.com/repository/docker/zhangshi0131/zhangshi0131/general
         SLACK_TITLE: Image Build and Sign
         SLACK_USERNAME: CICD
@@ -90,8 +90,10 @@ jobs:
           Name:Zhang Shi
           Metriculation:A0286008A
           Email:e1221820@u.nus.edu
-          Git:https://github.com/ColdSharkTen/Zhangshi
-          Image:https://hub.docker.com/repository/docker/zhangshi0131/zhangshi0131/general
+          Git:${{ secrets.GIT }}
+          #Git:https://github.com/ColdSharkTen/Zhangshi
+          Image:${{ secrets.IMAGE }}
+          #Image:https://hub.docker.com/repository/docker/zhangshi0131/zhangshi0131/general
         SLACK_TITLE: Image Build and Sign
         SLACK_USERNAME: CICD
         SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK_URL }}
