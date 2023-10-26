@@ -4,7 +4,7 @@ on:
     branches: 
       - 'v[0-9]+.[0-9]'
 jobs:
-  Fail:
+  Success:
     runs-on: ubuntu-latest
     if: "!startsWith(github.event.head_commit.message, '#NORUN')"
     steps:    
@@ -52,7 +52,7 @@ jobs:
         exit-code: '1'
         ignore-unfixed: true
         vuln-type: 'os,library'
-        severity: 'CRITICAL,HIGH'
+        severity: 'CRITICAL,LOW'
 
     - name: Move
       if: ${{ failure() }} 
@@ -114,8 +114,8 @@ jobs:
           title: 'table'
           initial_comment: 'post by slack-upload-file'
           
-  Success:
-    needs: Fail
+  Fail:
+    needs: Success
     runs-on: ubuntu-latest
     if: "!startsWith(github.event.head_commit.message, '#NORUN')"
     steps:    
@@ -163,7 +163,7 @@ jobs:
         exit-code: '1'
         ignore-unfixed: true
         vuln-type: 'os,library'
-        severity: 'CRITICAL,LOW'
+        severity: 'CRITICAL,HIGH'
 
     - name: Move
       if: ${{ failure() }} 
