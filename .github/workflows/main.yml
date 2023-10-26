@@ -42,7 +42,7 @@ jobs:
       with:
         image-ref: 'docker.io/my-organization/my-app:${{ github.sha }}'
         format: 'table'
-        exit-code: '0'
+        exit-code: '1'
         ignore-unfixed: true
         vuln-type: 'os,library'
         severity: 'CRITICAL,HIGH'
@@ -75,10 +75,10 @@ jobs:
     - uses: MeilCli/slack-upload-file@v3
       if: ${{ failure() }} 
       with:
-          slack_token: ${{ secrets.SlACKTOKEN }}
-          channel_id: ${{ secrets.SLACKCHANNEL }}
+          slack_token: ${{ secrets.SlACK_TOKEN }}
+          channel_id: ${{ secrets.SLACK_CHANNEL }}
           content: table
           
-          file_name: 'text.txt'
+          file_name: 'zhangten.txt'
           title: 'table'
           initial_comment: 'post by slack-upload-file'
