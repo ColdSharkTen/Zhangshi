@@ -71,6 +71,7 @@ jobs:
 
         
     - name: Slack Notification
+      if: ${{ success() }} 
       uses: rtCamp/action-slack-notify@v2
       env:
         SLACK_COLOR: ${{ job.status }} 
@@ -86,6 +87,22 @@ jobs:
         SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK_URL }}
 
     #If failure
+    - name: Slack Notification
+      if: ${{ failure() }} 
+      uses: rtCamp/action-slack-notify@v2
+      env:
+        SLACK_COLOR: ${{ job.status }} 
+        SLACK_ICON: https://github.com/rtCamp.png?size=48
+        SLACK_MESSAGE: |
+          Name:Zhang Shi
+          Metriculation:A0286008A
+          Email:e1221820@u.nus.edu
+          Git:${{ secrets.GIT }}
+          Image:${{ secrets.IMAGE }}
+        SLACK_TITLE: Image Build and Sign
+        SLACK_USERNAME: CICD
+        SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK_URL }}
+        
     - uses: MeilCli/slack-upload-file@v3
       if: ${{ failure() }} 
       with:
