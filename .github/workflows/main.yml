@@ -10,21 +10,21 @@ jobs:
     steps:          
     - name: Checkout sourse
       uses: actions/checkout@v2
-      
-    - name: Build an image from Dockerfile
+    
+    - name: Build_DockerfileImage
       run: |
         docker build -t docker.io/my-organization/my-app:${{ github.sha }} .
         
-    - name: Install Cosign
+    - name: Install_Cosign
       uses: sigstore/cosign-installer@v3.1.2
 
-    - name: Set up QEMU
+    - name: Setup_QEMU
       uses: docker/setup-qemu-action@v3
       
-    - name: Set up Docker Buildx
+    - name: Setup_Docker Buildx
       uses: docker/setup-buildx-action@v3
       
-    - name: Login to Docker Hub
+    - name: Login_Docker Hub
       uses: docker/login-action@v3
       with:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
@@ -37,16 +37,19 @@ jobs:
           push: true
           tags: zhangshi0131/zhangshi0131:${{github.sha}}
             
-    - name: Run_Trivy_vulnerability_scanner
+    - name: Run_Trivy vulnerability scanner
       uses: aquasecurity/trivy-action@master
       with:
         image-ref: 'docker.io/my-organization/my-app:${{ github.sha }}'
         format: 'table'
+        scan-type: 'fs'
+        output: 'trivy_scan_results.txt'
         exit-code: '1'
         ignore-unfixed: true
         vuln-type: 'os,library'
         severity: 'CRITICAL,HIGH'
-        
+
+   #if success    
     - name: Sign image with a key
       if: ${{ success() }} 
       run: |
@@ -67,26 +70,16 @@ jobs:
           Name:Zhang Shi
           Metriculation:A0286008A
           Email:e1221820@u.nus.edu
-          Git:https://github.com/ColdSharkTen/Zhangshi
-          Image:https://hub.docker.com/repository/docker/zhangshi0131/zhangshi0131/general
+          Git:${{ secrets.GIT }}
+          #Git:https://github.com/ColdSharkTen/Zhangshi
+          Image:${{ secrets.Image }}
+          #Image:https://hub.docker.com/repository/docker/zhangshi0131/zhangshi0131/general
         SLACK_TITLE: Image Build and Sign
         SLACK_USERNAME: CICD
         SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK_URL }}
+
         
-    - name: Save Trivy Scan Results
-      if: ${{ failure() }} 
-      run: |
-        trivy_scan_results="$(trivy --format table --exit-code 1 --ignore-unfixed --vuln-type os,library --severity CRITICAL,HIGH docker.io/my-organization/my-app:${{ github.sha }})"
-        echo "$trivy_scan_results" > trivy_scan_results.txt
-      shell: bash
-
-    - name: Upload Trivy Scan Results
-      uses: actions/upload-artifact@v2
-      if: ${{ failure() }} 
-      with:
-        name: trivy-scan-results
-        path: trivy_scan_results.txt
-
+ #if fail  
     - name: Failure Slack Notification
       uses: rtCamp/action-slack-notify@v2
       if: ${{ failure() }} 
