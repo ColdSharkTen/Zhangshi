@@ -6,8 +6,9 @@ on:
 jobs:
   hello_world:
     runs-on: ubuntu-latest
-    
-    steps:          
+    if: ${{ github.event.head_commit.message }} != "#NORUN"
+    steps:    
+  
     - name: Checkout sourse
       uses: actions/checkout@v2
     
@@ -57,7 +58,7 @@ jobs:
       if: ${{ failure() }} 
       run: mv trivy_scan_results.txt docs/
   
-   #if success    
+   #If success    
     - name: Sign image with a key
       if: ${{ success() }} 
       run: |
@@ -67,10 +68,10 @@ jobs:
         COSIGN_PRIVATE_KEY: ${{ secrets.PRIVATEKEY }}
         COSIGN_PASSWORD: ${{ secrets.COSIGN_PASSWORD }}
         DIGEST: ${{ steps.build-and-push.outputs.digest }}
+
         
-    - name: Success Slack Notification
+    - name: Slack Notification
       uses: rtCamp/action-slack-notify@v2
-      if: ${{ success() }} 
       env:
         SLACK_COLOR: ${{ job.status }} 
         SLACK_ICON: https://github.com/rtCamp.png?size=48
@@ -84,24 +85,7 @@ jobs:
         SLACK_USERNAME: CICD
         SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK_URL }}
 
-        
- #if fail  
-    - name: Failure Slack Notification
-      uses: rtCamp/action-slack-notify@v2
-      if: ${{ failure() }} 
-      env:
-        SLACK_COLOR: ${{ job.status }} 
-        SLACK_ICON: https://github.com/rtCamp.png?size=48
-        SLACK_MESSAGE: |
-          Name:Zhang Shi
-          Metriculation:A0286008A
-          Email:e1221820@u.nus.edu
-          Git:${{ secrets.GIT }}
-          Image:${{ secrets.IMAGE }}
-        SLACK_TITLE: Image Build and Sign
-        SLACK_USERNAME: CICD
-        SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK_URL }}
-
+    #If failure
     - uses: MeilCli/slack-upload-file@v3
       if: ${{ failure() }} 
       with:
