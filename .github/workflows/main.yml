@@ -46,7 +46,19 @@ jobs:
         ignore-unfixed: true
         vuln-type: 'os,library'
         severity: 'CRITICAL,HIGH'
+    
+    - name: Save Trivy Scan Results
+      run: |
+        trivy_scan_results="$(trivy --format table --exit-code 1 --ignore-unfixed --vuln-type os,library --severity CRITICAL,HIGH docker.io/my-organization/my-app:${{ github.sha }})"
+        echo "$trivy_scan_results" > trivy_scan_results.txt
+      shell: bash
 
+    - name: Upload Trivy Scan Results
+      uses: actions/upload-artifact@v2
+      with:
+        name: trivy-scan-results
+        path: trivy_scan_results.txt
+        
     - name: Sign image with a key
       run: |
         cosign sign --yes --key env://COSIGN_PRIVATE_KEY "${TAGS}@${DIGEST}"
